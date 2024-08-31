@@ -45,20 +45,15 @@ setwd("D:/Anna/Dropbox/Projects/2024_San Diego/School reforms/Data/")
 ################################################################################
 ## 1. Retrieve the survey data for sub-Saharan Africa
 ################################################################################
-## Set up your DHS credentials (password: barabani1!)
-set_rdhs_config(email = "anna.k.dimitrova@gmail.com",
-                project = "Climate shocks and childhood health")
-
-
-set_rdhs_config(email = "anna.k.dimitrova@gmail.com",
-                project = "Climate shocks and childhood health",
+## Set up your DHS credentials 
+set_rdhs_config(email = "XXX",
+                project = "XXX",
                 config_path = "rdhs.json",
                 cache_path = "dhs",
                 global = FALSE)
 
 ## Make a list of eligible surveys and download them
 surveys <- dhs_datasets() %>% 
-  #dplyr::filter(SurveyType == "DHS") %>% 
   dplyr::filter(FileFormat == "Stata dataset (.dta)") %>% 
   dplyr::filter(FileType == "Children's Recode")
 
@@ -67,7 +62,6 @@ library(countrycode)
 surveys$Region <- countrycode(surveys$CountryName, 'country.name', 'region')  
 surveys <- surveys %>% 
   subset(Region == "Sub-Saharan Africa") 
-  #%>% subset(CountryName %in% c("Liberia", "Zambia", "Rwanda", "Benin", "Burkina Faso", "Burundi", "Mozambique", "Niger", "Zimbabwe"))
 
 unique(surveys$CountryName)
 unique(surveys$SurveyId)
@@ -88,10 +82,6 @@ vars = c(
   #child characteristics and anthropometric measures
   "bidx", "bord", "b0", "b1", "b2" ,"b3", "b4", "b5", "b8", "b9", "b11", "b17", "b18", "b19", "b20",
   "hw70", "hw71", "hw72", "hw73", "hw1", "hw2", "hw3", "hw13", "hw16", "hw17", "hw18", "hw19"
-  #healthcare during pregnancy, delivery and breastfeeding
-  #"m1", "m4", "m5", "m15", "m14", "m18", "m19", "m3a", "m3b", "m3c", "m3d", "m3e", "m3f", "m66",
-  #variables for recalculating the wealth index
-  #"v127", "v128", "v129", "v161", "v119", "v120", "v121", "v122", "v123", "v124", "v125", "v153", "v136", "v745b"
 )
 
 questions <- search_variables(surveys$FileName, variables = vars,  reformat=TRUE)
@@ -277,11 +267,9 @@ var <- c(
 df1 <- df1 %>% 
   dplyr::select(var) 
 
-
 sort(unique(df1$intYr))
 
 ## Remove countries with only one survey round
-
 df1 <- df1 %>%
   group_by(CountryName) %>%
   mutate(unique_surveys = n_distinct(SurveyId)) %>% 
@@ -295,7 +283,6 @@ unique(df1$CountryName)
 ################################################################################
 ## 4. Add school reform info
 ################################################################################
-
 
 data <- df1 %>% 
   ## add primary reform years (from paper: Martin (2024) The intergenerational effect of tuition-free lower-secondary education on children s nutritional outcomes in Africa)
@@ -368,8 +355,6 @@ data <- df1 %>%
   #add survey year 
   mutate(surveyYr = substr(SurveyId, 3, 6)) %>%      
   filter(twin==0)
-
-
 
 write.csv(data, "data_for_analysis.csv")
 
