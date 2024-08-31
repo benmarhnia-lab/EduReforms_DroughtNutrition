@@ -19,10 +19,7 @@ library(lubridate)
 library(dplyr)
 library(ggplot2)
 
-
-
-
-setwd("D:/Anna/Dropbox/Projects/2024_San Diego/School reforms/Data/")
+setwd("D:/Project folder")
 
 data <- read.csv("data_for_analysis.csv")[-1]
 sort(unique(data$birthYr))
@@ -47,12 +44,11 @@ proj4string(sp) <- CRS("+proj=longlat +datum=WGS84")
 plot(sp)
 
 
-
 ################################################################################
 ### Generate exposure measures - 2 to 5 month SPEI
 ################################################################################
 
-load("D:/Anna/Dropbox/Data/SPEI_generated/spei02.RData")
+load("D:/Project folder/spei02.RData")
 
 cent_spei <- raster::extract(sd_SPEI,         # raster layer
                              sp,              # SPDF with centroids for buffer
@@ -71,19 +67,15 @@ df0 <- df0 %>%
   mutate(year = as.numeric(year),
          month=as.numeric(month))
 
-
 df0 <- df0 %>% na.omit()
 df0 <- df0 %>% unique()
-
 
 data_matched <- data %>% 
   mutate(birthYr_plus1 = birthYr+1) %>% 
   left_join(df0, by = c("CountryName" = "CountryName", "SurveyId" = "SurveyId", "psu" = "psu", "intYr" = "year", "intMo" = "month")) %>% 
   rename(spei_intMo = spei)
 
-
 write.csv(data_matched, "data_for_analysis_spei02.csv")
-
 
 sort(unique(data$intMo))
 sort(unique(data$intYr))
