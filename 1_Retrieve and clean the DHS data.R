@@ -39,8 +39,7 @@ options(scipen=999)
 options(digits=5)
 
 
-#setwd("C:/Users/annak/Dropbox/Projects/2024_San Diego/School reforms/Data/")
-setwd("D:/Anna/Dropbox/Projects/2024_San Diego/School reforms/Data/")
+setwd("D:/Project folder")
 
 ################################################################################
 ## 1. Retrieve the survey data for sub-Saharan Africa
