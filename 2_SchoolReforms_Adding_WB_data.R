@@ -9,7 +9,7 @@
 ###############################################################
 rm(list =ls())
 
-setwd("D:/Anna/Dropbox/Projects/2024_San Diego/School reforms/Data/")
+setwd("D:/School reforms/Data/")
 
 #install.packages("wbstats")
 #devtools::install_github("nset-ornl/wbstats")
