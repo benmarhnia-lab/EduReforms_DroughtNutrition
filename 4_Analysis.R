@@ -22,7 +22,7 @@ library(sjPlot)
 library(car)
 options(scipen=999)
 
-setwd("D:/Anna/Dropbox/Projects/2024_San Diego/School reforms/Data/")
+setwd("D:/School reforms/Data/")
 
 results = data.frame(speiScale=as.character(), ageGr=as.numeric(), primReformExp=as.character() , coef=as.numeric(), SE=as.numeric(), pvalue=as.numeric(), wald.test.pval=as.character())
 
@@ -147,12 +147,12 @@ for (scale in c(2, 3, 4, 5)) {
   
 }
 
-write.csv(results, "D:/Anna/Dropbox/Projects/2024_San Diego/School reforms/Results/results.csv")
+write.csv(results, "D:/School reforms/Results/results.csv")
 
 ## Wald test to determine statistically significant differences in the outcomes: https://www.geeksforgeeks.org/how-to-perform-a-wald-test-in-r/#
 
 ### Plot the results
-setwd("D:/Anna/Dropbox/Projects/2024_San Diego/School reforms/Results/")
+setwd("D:/School reforms/Results/")
 
 results <- read.csv("results.csv")[-1]
 
@@ -248,53 +248,3 @@ save_plot("Fig_1.svg", fig = plot_ab, width=17, height=13)
 
 
 
-#### Descriptives
-
-data <- read.csv("D:/Anna/Dropbox/Projects/2024_San Diego/School reforms/Data/data_for_analysis_spei02.csv")[-1]
-countries = c("Benin" , "Burundi", "Lesotho", "Namibia", "Sierra Leone", "Togo", "Zimbabwe", "Cameroon", "Malawi", "Nigeria", "Rwanda", "Tanzania" )
-vars = c("CountryName", "SurveyId", "intYr", "intMo", "wt", "wasted", "sex", "age_child_months", "bord", "age_mother", "birthYr_mother", "primReformExp","spei_intMo", "drought", "wealth_new", "gdp_growth", "urban_pop")
-
-data <- data %>% 
-  filter(age_mother>=15 & age_mother<=30) %>% 
-  mutate(drop = ifelse(CountryName %in% c("Benin", "Burundi", "Lesotho", "Namibia", "Sierra Leone", "Togo", "Zimbabwe") & primReformExp==1, 1, 0)) %>% 
-  filter(drop==0) %>% 
-  filter(SurveyId!="BJ2017DHS" & SurveyId!="NM2013DHS") %>% 
-  mutate(drought = ifelse(spei_intMo <= -1, 1, 0)) %>% 
-  filter(CountryName %in% countries) %>% 
-  dplyr::select(all_of(vars)) %>% 
-  drop_na() %>% 
-  mutate(drought_primReformExpYes = ifelse(drought==1 & primReformExp==1, 1, 0)) %>% 
-  mutate(drought_primReformExpNo = ifelse(drought==1 & primReformExp==0, 1, 0))
-
-
-desc_age_0_5 <- data %>% 
-  group_by(CountryName, primReformExp) %>% 
-  summarise("Number of children" = n(),
-            wasted = mean(wasted),
-            drought = mean(drought)) %>% 
-  ungroup() %>% 
-  mutate(wasted = round(wasted*100, digits = 1)) %>% 
-  mutate(drought= round(drought*100, digits = 1))
-
-desc_age_0_3 <- data %>% 
-  filter(age_child_months<36) %>% 
-  group_by(CountryName, primReformExp) %>% 
-  summarise("Number of children" = n(),
-            wasted = mean(wasted),
-            drought = mean(drought)) %>% 
-  ungroup() %>% 
-  mutate(wasted = round(wasted*100, digits = 1)) %>% 
-  mutate(drought= round(drought*100, digits = 1)) 
-
-desc_age_0_2 <- data %>% 
-  filter(age_child_months<24) %>% 
-  group_by(CountryName, primReformExp) %>% 
-  summarise("Number of children" = n(),
-            wasted = mean(wasted),
-            drought = mean(drought)) %>% 
-  ungroup() %>% 
-  mutate(wasted = round(wasted*100, digits = 1)) %>% 
-  mutate(drought= round(drought*100, digits = 1)) 
-
-
-unique(data$SurveyId)
