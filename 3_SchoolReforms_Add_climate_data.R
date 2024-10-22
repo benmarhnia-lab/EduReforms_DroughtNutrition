@@ -22,7 +22,7 @@ library(ggplot2)
 
 
 
-setwd("D:/Anna/Dropbox/Projects/2024_San Diego/School reforms/Data/")
+setwd("D:/School reforms/Data/")
 
 data <- read.csv("data_for_analysis.csv")[-1]
 sort(unique(data$birthYr))
@@ -61,7 +61,7 @@ plot(sp)
 ### Generate exposure measures - 2 to 5 month SPEI
 ################################################################################
 
-load("D:/Anna/Dropbox/Data/SPEI_generated/spei06.RData")
+load("D:/Data/SPEI_generated/spei02.RData")
 
 cent_spei <- raster::extract(sd_SPEI,         # raster layer
                              sp,              # SPDF with centroids for buffer
@@ -91,7 +91,7 @@ data_matched <- data %>%
   rename(spei_intMo = spei)
 
 
-write.csv(data_matched, "data_for_analysis_spei06.csv")
+write.csv(data_matched, "data_for_analysis_spei02.csv")
 
 
 sort(unique(data$intMo))
