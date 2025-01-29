@@ -47,13 +47,13 @@ setwd("D:/School reforms/Data/")
 ################################################################################
 ## 1. Retrieve the survey data for sub-Saharan Africa
 ################################################################################
-## Set up your DHS credentials (password: barabani1!)
-set_rdhs_config(email = "anna.k.dimitrova@gmail.com",
-                project = "Climate shocks and childhood health")
+## Set up your DHS credentials 
+set_rdhs_config(email = XXX,
+                project = XXX)
 
 
-set_rdhs_config(email = "anna.k.dimitrova@gmail.com",
-                project = "Climate shocks and childhood health",
+set_rdhs_config(email = XXX,
+                project = XXX,
                 config_path = "rdhs.json",
                 cache_path = "dhs",
                 global = FALSE)
