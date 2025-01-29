@@ -61,7 +61,7 @@ plot(sp)
 ### Generate exposure measures - 2 to 5 month SPEI
 ################################################################################
 
-load("D:/Data/SPEI_generated/spei02.RData")
+load("spei02.RData")
 
 cent_spei <- raster::extract(sd_SPEI,         # raster layer
                              sp,              # SPDF with centroids for buffer
